@@ -1,0 +1,60 @@
+ upstream fastcgi_backend {
+    server   unix:/var/run/php/php7.4-fpm.sock;
+ }
+server {
+    listen 80;
+
+    if ($http_x_forwarded_proto = 'http') {
+        return 301 https://$host$request_uri;
+    }
+
+  #  server_name supplier.localhost;
+    root /var/www/html/public/;
+
+    index index.html index.htm index.php;
+
+    location / {
+try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass   fastcgi_backend;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            include        fastcgi_params;
+        }
+
+  error_log /var/log/nginx/error.log;
+  access_log /var/log/nginx/access.log;
+}
+
+server {
+    listen 443 ssl;
+    ssl_certificate         /etc/nginx/website.crt;
+    ssl_certificate_key     /etc/nginx/website.key;
+
+    if ($http_x_forwarded_proto = 'http') {
+        return 301 https://$host$request_uri;
+    }
+
+#    server_name supplier.localhost;
+    root /var/www/html/public/;
+
+
+    index index.html index.htm index.php;
+
+    location / {
+try_files $uri $uri/ /index.php?$query_string;
+        }
+
+
+        location ~ \.php$ {
+            fastcgi_pass   fastcgi_backend;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            include        fastcgi_params;
+        }
+
+  error_log /var/log/nginx/error.log error;
+  access_log /var/log/nginx/access.log;
+}

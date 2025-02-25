@@ -1,0 +1,35 @@
+filebeat.inputs:
+- type: log
+  paths:
+    - /var/log/nginx/*.log
+  fields:
+    type: staging.product-terms.nginx.log
+    environment: staging.product-terms
+    service: nginx
+  document_type: filebeat.nginx.product-terms
+  registry: /var/lib/filebeat/registry
+
+- type : log
+  paths:
+    - /var/log/php*.log
+  fields:
+    type: staging.product-terms.php-fpm.log
+    environment: staging.product-terms
+    service: php-fpm
+  document_type: filebeat.php-fpm
+  registry: /var/lib/filebeat/registry
+
+- type : log
+  paths:
+    - /var/www/html/storage/logs/laravel.log
+  fields:
+    type: develop.product-terms.laravel.log
+    environment: develop.product-terms
+    service: laravel
+  document_type: filebeat.laravel
+  registry: /var/lib/filebeat/registry
+
+output.elasticsearch:
+  hosts: ["https://vpc-staging-logging-roobeo-6zxgosaq5els6mt7ce3wmppzuy.eu-central-1.es.amazonaws.com:443"]
+  protocol: "https"
+

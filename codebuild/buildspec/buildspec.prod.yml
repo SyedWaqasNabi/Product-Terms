@@ -1,0 +1,92 @@
+version: 0.2
+
+env:
+  parameter-store:
+   ptAppUrl: "product-terms-prod-app-url"
+   ptAppKey: "product-terms-prod-app-key"
+   ptDBHost: "product-terms-prod-database-host"
+   ptDBName: "product-terms-prod-database-name"
+   ptDBUsername: "product-terms-prod-database-username"
+   ptDBPassword: "product-terms-prod-database-password"
+   ptRedisHost: "product-terms-prod-redis-host"
+   ptMailerHost: "product-terms-prod-mailer-host"
+   ptMailerPort: "product-terms-prod-mailer-port"
+   ptMailerUsername: "product-terms-prod-mailer-username"
+   ptMailerPassword: "product-terms-prod-mailer-password"
+   ptAwsKey: "product-terms-prod-aws-access-key"
+   ptAwsSecret: "product-terms-prod-access-secret"
+   ptAwsBucket: "product-terms-prod-aws-bucket"
+   ptAmqpHost: "product-terms-prod-amqp-host"
+   ptAmqpPort: "product-terms-prod-amqp-port"
+   ptAmqpUsername: "product-terms-prod-amqp-username"
+   ptAmqpPassword: "product-terms-prod-amqp-password"
+   ptAmqpVhost: "product-terms-prod-amqp-vhost"
+   ptAuthUsername: "product-terms-prod-auth-username"
+   ptAuthPassword: "product-terms-prod-auth-password"
+   ptAwsBucketFolder: "product-terms-prod-aws-bucket-folder"
+
+phases:
+  pre_build:
+    commands:
+      - export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+  build:
+    commands:
+      - cp codebuild/environment/Dockerfile.prod $PWD/Dockerfile
+      - cp codebuild/supervisor.conf $PWD/
+      - cp codebuild/start-commands.sh $PWD/
+      - chmod a+x start-commands.sh
+      - cp codebuild/nginx/prod/default $PWD/
+      - cp codebuild/filebeat/prod/filebeat.yml $PWD/
+      - cp -r src/* $PWD/
+      - rm -rf src/
+      - echo " \n
+         APP_NAME=Product-Terms-prod \n
+         APP_ENV=local \n
+         APP_KEY=$ptAppKey \n
+         APP_DEBUG=true \n
+         APP_URL=https://$ptAppUrl \n
+         LOG_CHANNEL=stack \n
+         DB_CONNECTION=mysql \n
+         DB_HOST=$ptDBHost \n
+         DB_PORT=3306 \n
+         DB_DATABASE=$ptDBName \n
+         DB_USERNAME=$ptDBUsername \n
+         DB_PASSWORD=$ptDBPassword \n
+         BROADCAST_DRIVER=log \n
+         CACHE_DRIVER=redis \n
+         QUEUE_CONNECTION=database \n
+         SESSION_DRIVER=redis \n
+         SESSION_LIFETIME=120 \n
+         REDIS_HOST=$ptRedisHost \n
+         REDIS_PASSWORD=null \n
+         REDIS_PORT=6379 \n
+         REDIS_CACHE_DB=2 \n
+         REDIS_DB=3 \n
+         MAIL_MAILER=smtp \n
+         MAIL_HOST=$ptMailerHost \n
+         MAIL_PORT=$ptMailerPort \n
+         MAIL_USERNAME=$ptMailerUsername \n
+         MAIL_PASSWORD=$ptMailerPassword \n
+         MAIL_ENCRYPTION=null \n
+         MAIL_FROM_ADDRESS=null \n
+         MAIL_FROM_NAME="$APP_NAME}" \n
+         AWS_ACCESS_KEY_ID=$ptAwsKey \n
+         AWS_SECRET_ACCESS_KEY=$ptAwsSecret \n
+         AWS_DEFAULT_REGION=eu-central-1 \n
+         AWS_BUCKET=$ptAwsBucket \n
+         AWS_BUCKET_FOLDER=$ptAwsBucketFolder \n
+         AMQP_HOST=$ptAmqpHost \n
+         AMQP_PORT=$ptAmqpPort \n
+         AMQP_USERNAME=$ptAmqpUsername \n
+         AMQP_PASSWORD=$ptAmqpPassword \n
+         AMQP_VHOST=$ptAmqpVhost \n
+         BASIC_AUTH_USERNAME=$ptAuthUsername \n
+         BASIC_AUTH_PASSWORD=$ptAuthPassword \n
+         " > $PWD/.env
+      - docker build -t product-terms -f Dockerfile .
+      - docker tag product-terms:latest 853867790741.dkr.ecr.eu-central-1.amazonaws.com/roobeo-production/product-terms:latest
+      - docker push 853867790741.dkr.ecr.eu-central-1.amazonaws.com/roobeo-production/product-terms:latest
+      - echo Done compiling and pushing

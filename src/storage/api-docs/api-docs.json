@@ -1,0 +1,676 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "description": "",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/product/terms:import": {
+            "post": {
+                "tags": [
+                    "Product Terms File"
+                ],
+                "summary": "Upload Csv File",
+                "description": "Upload Csv File",
+                "operationId": "Upload Csv File",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "csv_file": {
+                                        "description": "Upload Csv file",
+                                        "type": "file",
+                                        "format": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/product/terms:delete": {
+            "post": {
+                "tags": [
+                    "Product Terms File"
+                ],
+                "summary": "Upload Csv File to Delete Items",
+                "description": "Upload Csv File to Delete Items",
+                "operationId": "Upload Csv File",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file"
+                                ],
+                                "properties": {
+                                    "csv_file": {
+                                        "description": "Upload Csv file",
+                                        "type": "file",
+                                        "format": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/product/terms:export": {
+            "post": {
+                "tags": [
+                    "Product Terms File"
+                ],
+                "summary": "Export Csv File",
+                "description": "Export Csv File",
+                "operationId": "Export Csv File",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "export_all": {
+                                        "description": "Export All",
+                                        "type": "bool"
+                                    },
+                                    "selected_id": {
+                                        "description": "Selected IDs array",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/product/terms:download/{id}": {
+            "get": {
+                "tags": [
+                    "Product Terms File"
+                ],
+                "summary": "Download Exported File",
+                "description": "Download Exported File",
+                "operationId": "Download Exported File",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "export job Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/product/terms": {
+            "get": {
+                "tags": [
+                    "Product Terms"
+                ],
+                "summary": "List all Trade Item Offers",
+                "operationId": "App\\Http\\Controllers\\TradeItemOfferController::index",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Selected Id",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "trade_item_id",
+                        "in": "query",
+                        "description": "Selected Trade Item Id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "is_active",
+                        "in": "query",
+                        "description": "Is Active",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "is_warehouse_item",
+                        "in": "query",
+                        "description": "Is Warehouse Item",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "customer_group_id",
+                        "in": "query",
+                        "description": "Selected Customer Group Id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "import_status",
+                        "in": "query",
+                        "description": "Selected Import Status",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "stock_keeping_unit",
+                        "in": "query",
+                        "description": "Selected Stock Keeping Unit",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "supplier_id",
+                        "in": "query",
+                        "description": "Selected Supplier Id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "supplier_trade_item_number",
+                        "in": "query",
+                        "description": "Selected Supplier Trade Item Number",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "created_after",
+                        "in": "query",
+                        "description": "Created After",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "created_before",
+                        "in": "query",
+                        "description": "Created Before",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "updated_after",
+                        "in": "query",
+                        "description": "Updated After",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "updated_before",
+                        "in": "query",
+                        "description": "Updated Before",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Product Terms"
+                ],
+                "summary": "Add a new Trade Item Offer",
+                "operationId": "App\\Http\\Controllers\\TradeItemOfferController::store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "internal_name": {
+                                        "description": "Internal Name",
+                                        "type": "string"
+                                    },
+                                    "trade_item_id": {
+                                        "description": "Trade Item Id",
+                                        "type": "integer"
+                                    },
+                                    "supplier_id": {
+                                        "description": "Supplier Id",
+                                        "type": "integer"
+                                    },
+                                    "supplier_trade_item_number": {
+                                        "description": "Supplier Trade Item Number",
+                                        "type": "string"
+                                    },
+                                    "customer_group_id": {
+                                        "description": "Customer Group Id",
+                                        "type": "integer"
+                                    },
+                                    "net_price": {
+                                        "description": "Net Price",
+                                        "type": "string"
+                                    },
+                                    "currency": {
+                                        "description": "Currency",
+                                        "type": "string"
+                                    },
+                                    "sales_unit": {
+                                        "description": "Sales Unit",
+                                        "type": "string"
+                                    },
+                                    "stock_keeping_unit": {
+                                        "description": "Stock Keeping Unit",
+                                        "type": "string"
+                                    },
+                                    "old_stock_keeping_unit": {
+                                        "description": "Old Stock Keeping Unit",
+                                        "type": "string"
+                                    },
+                                    "maximum_delivery_time": {
+                                        "description": "Maximum Delivery Time",
+                                        "type": "string"
+                                    },
+                                    "minimum_delivery_time": {
+                                        "description": "Minimum Delivery Time",
+                                        "type": "string"
+                                    },
+                                    "delivery_time_unit": {
+                                        "description": "Delivery Time Unit",
+                                        "type": "string"
+                                    },
+                                    "maximum_order_quantity": {
+                                        "description": "Maximum Order Quantity",
+                                        "type": "string"
+                                    },
+                                    "minimum_order_quantity": {
+                                        "description": "Minimum Order Quantity",
+                                        "type": "string"
+                                    },
+                                    "import_status": {
+                                        "description": "Import status",
+                                        "type": "string"
+                                    },
+                                    "is_active": {
+                                        "description": "Is Active",
+                                        "type": "string"
+                                    },
+                                    "is_warehouse_item": {
+                                        "description": "Is Warehouse Item",
+                                        "type": "string"
+                                    },
+                                    "created_at ": {
+                                        "description": "Created at",
+                                        "type": "string",
+                                        "format": "datetime"
+                                    },
+                                    "updated_at": {
+                                        "description": "Updated at",
+                                        "type": "string",
+                                        "format": "datetime"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/product/terms/{id}": {
+            "get": {
+                "tags": [
+                    "Product Terms"
+                ],
+                "summary": "Show Trade Item Offer",
+                "operationId": "App\\Http\\Controllers\\TradeItemOfferController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Selected Id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Product Terms"
+                ],
+                "summary": "Update an existing Trade Item Offer",
+                "operationId": "App\\Http\\Controllers\\TradeItemOfferController::update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID Of Trade Item Offer To Update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "internal_name": {
+                                        "description": "Internal Name",
+                                        "type": "string"
+                                    },
+                                    "supplier_id": {
+                                        "description": "Supplier Id",
+                                        "type": "integer"
+                                    },
+                                    "supplier_trade_item_number": {
+                                        "description": "Supplier Trade Item Number",
+                                        "type": "string"
+                                    },
+                                    "customer_group_id": {
+                                        "description": "Customer Group Id",
+                                        "type": "integer"
+                                    },
+                                    "net_price": {
+                                        "description": "Net Price",
+                                        "type": "string"
+                                    },
+                                    "currency": {
+                                        "description": "Currency",
+                                        "type": "string"
+                                    },
+                                    "sales_unit": {
+                                        "description": "Sales Unit",
+                                        "type": "string"
+                                    },
+                                    "stock_keeping_unit": {
+                                        "description": "Stock Keeping Unit",
+                                        "type": "string"
+                                    },
+                                    "old_stock_keeping_unit": {
+                                        "description": "Old Stock Keeping Unit",
+                                        "type": "string"
+                                    },
+                                    "maximum_delivery_time": {
+                                        "description": "Maximum Delivery Time",
+                                        "type": "string"
+                                    },
+                                    "minimum_delivery_time": {
+                                        "description": "Minimum Delivery Time",
+                                        "type": "string"
+                                    },
+                                    "delivery_time_unit": {
+                                        "description": "Delivery Time Unit",
+                                        "type": "string"
+                                    },
+                                    "maximum_order_quantity": {
+                                        "description": "Maximum Order Quantity",
+                                        "type": "string"
+                                    },
+                                    "minimum_order_quantity": {
+                                        "description": "Minimum Order Quantity",
+                                        "type": "string"
+                                    },
+                                    "import_status": {
+                                        "description": "Import status",
+                                        "type": "string"
+                                    },
+                                    "is_active": {
+                                        "description": "Is Active",
+                                        "type": "string"
+                                    },
+                                    "is_warehouse_item": {
+                                        "description": "Is Warehouse Item",
+                                        "type": "string"
+                                    },
+                                    "created_at ": {
+                                        "description": "Created at",
+                                        "type": "string",
+                                        "format": "datetime"
+                                    },
+                                    "updated_at": {
+                                        "description": "Updated at",
+                                        "type": "string",
+                                        "format": "datetime"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Product Terms"
+                ],
+                "summary": "Delete Trade Item Offer",
+                "description": "Deletes trade item offer",
+                "operationId": "deleteTradeItemoffer",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Offer Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "basic": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "basic": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        }
+    }
+}

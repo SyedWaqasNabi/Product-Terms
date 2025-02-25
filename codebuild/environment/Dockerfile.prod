@@ -1,0 +1,24 @@
+FROM 853867790741.dkr.ecr.eu-central-1.amazonaws.com/product-import/product-import-base:latest
+
+RUN mkdir -p /var/www/html/
+
+WORKDIR /var/www/html/
+
+COPY . .
+
+##### COPY startup commands.sh
+COPY start-commands.sh start-commands.sh
+COPY default /etc/nginx/sites-enabled/
+COPY filebeat.yml /etc/filebeat/filebeat.yml
+COPY supervisor.conf /etc/supervisor.conf
+
+
+RUN composer install 
+#RUN php artisan key:generate
+RUN php artisan migrate
+#RUN php artisan l5-swagger:generate
+#RUN php artisan db:seed
+
+CMD sh start-commands.sh && cd /usr/bin/ && php-fpm7.4 -R && nginx -g "daemon off;"
+
+
