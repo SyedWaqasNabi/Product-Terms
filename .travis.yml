@@ -1,0 +1,28 @@
+os: linux
+sudo: required
+language: php
+dist: bionic
+php: 7.4
+
+services:
+  - mysql
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+before_script:
+  - cd src
+  - cp ./.env.dist ./.env
+  - composer self-update
+  - test -n "$GITHUB_TOKEN" && composer config github-oauth.github.com "$GITHUB_TOKEN" || true
+  - composer install
+  - ./vendor/bin/phpunit --version
+  - php artisan db:create
+  - php artisan key:generate
+  - php artisan migrate
+
+script:
+  - composer test
+  - composer check-style
+  - composer check-security

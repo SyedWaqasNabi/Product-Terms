@@ -1,0 +1,26 @@
+.idea
+/docker-compose.yml
+/src/node_modules
+/src/public/hot
+/src/public/storage
+/src/storage/*.key
+/src/vendor
+/src/coverage.xml
+/src/coverage
+/src/.env
+/src/.env.backup
+/src/.phpstorm.meta.php
+/src/.phpunit.result.cache
+/src/_ide_helper.php
+/src/_ide_helper_models.php
+/src/coverage.xml
+/src/coverage
+/src/Homestead.json
+/src/Homestead.yaml
+/src/npm-debug.log
+/src/yarn-error.log
+#/src/storage/api-docs/api-docs.json
+
+# Junk files
+.DS_Store
+.thumb
